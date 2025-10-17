@@ -1,11 +1,9 @@
-import './App.css'
+import { OcrWindow } from "~/components";
 
-function App() {
-
+export function App() {
   return (
-    <>
-    </>
-  )
+    <div className="App">
+      <OcrWindow />
+    </div>
+  );
 }
-
-export default App
