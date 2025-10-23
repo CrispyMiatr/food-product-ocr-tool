@@ -1,43 +1,74 @@
-// backend/src/index.ts
-import express, { Request, Response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import multer from 'multer';
 import { ImageAnnotatorClient } from '@google-cloud/vision';
+import { VertexAI } from '@google-cloud/vertexai';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
-const port = 3001; // Backend port
+const port = 3001;
 
-// Cors middleware for requests from frontend
+// For requests from frontend
 app.use(cors());
 app.use(express.json());
 
+// File handler
 const upload = multer({
     storage: multer.memoryStorage(),
     limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-const visionClient = new ImageAnnotatorClient({
-    keyFilename: './food-product-ocr-tool.json'
+// Initialise Google Cloud Vision API client and VertexAI client
+const visionClient = new ImageAnnotatorClient();
+const vertexAI = new VertexAI({
+    project: process.env.GOOGLE_CLOUD_PROJECT || '',
+    location: process.env.GOOGLE_CLOUD_LOCATION || ''
+});
+const generativeModel = vertexAI.getGenerativeModel({
+    model: 'gemini-2.5-pro'
 });
 
-app.post('/api/ocr', upload.single('image'), async (req: Request, res: Response) => {
+// Set custom prompt
+const getPrompt = (fullText: string): string => {
+    return `Explain in short what you think the given text is:
+    """
+    ${fullText}
+    """
+    `
+}
+
+app.post('/api/ocr', upload.single('image'), async (req, res) => {
     if (!req.file) {
         return res.status(400).send('No file uploaded.');
     }
 
     try {
+        // Vision API
         const content = req.file.buffer;
         const [result] = await visionClient.textDetection({
             image: { content },
         });
-
-        const detections = result.textAnnotations;
-        if (detections && detections.length > 0) {
-            const fullText = detections[0].description;
-            res.json({ text: fullText })
-        } else {
-            res.json({ text: 'No text found in the image.' });
+        const rawText = result.textAnnotations;
+        let fullText = 'No text found in the image.';
+        if (rawText && rawText.length > 0) {
+            fullText = rawText[0].description ?? 'No text found in the image.';
         }
+
+        // Vertex Gemeni API
+        const prompt = getPrompt(fullText);
+        const request = {
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        };
+        const resp = await generativeModel.generateContent(request);
+        const aiText = resp.response.candidates?.[0]?.content?.parts?.[0]?.text || "Could not process the text.";
+
+        // Final response
+        res.json({
+            ocrText: fullText,
+            aiText: aiText
+        });
 
     } catch (error) {
         console.error('ERROR:', error);
