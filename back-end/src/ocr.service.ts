@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import multer from 'multer';
-import { ImageAnnotatorClient } from '@google-cloud/vision';
+import { ImageAnnotatorClient, protos } from '@google-cloud/vision';
 import { VertexAI } from '@google-cloud/vertexai';
 import dotenv from 'dotenv';
 
@@ -39,21 +39,36 @@ const getPrompt = (fullText: string): string => {
     `
 }
 
-app.post('/api/ocr', upload.single('image'), async (req, res) => {
-    if (!req.file) {
-        return res.status(400).send('No file uploaded.');
+app.post('/api/ocr', upload.array('image', 5), async (req, res) => {
+    if (!req.files || (req.files as Express.Multer.File[]).length === 0) {
+        return res.status(400).send('No files uploaded.');
     }
 
     try {
-        // Vision API
-        const content = req.file.buffer;
-        const [result] = await visionClient.textDetection({
-            image: { content },
+        const files = req.files as Express.Multer.File[];
+
+        // Prepare requests for batch processing
+        const requests = files.map(file => {
+            const content = file.buffer;
+            return {
+                image: { content },
+                features: [{ type: 'TEXT_DETECTION' as const }],
+            };
         });
-        const rawText = result.textAnnotations;
-        let fullText = 'No text found in the image.';
-        if (rawText && rawText.length > 0) {
-            fullText = rawText[0].description ?? 'No text found in the image.';
+
+        // Vision API - Batch processing
+        const [results] = await visionClient.batchAnnotateImages({ requests });
+        const allTextAnnotations = results.responses || [];
+
+        let fullText = '';
+        allTextAnnotations.forEach((response: protos.google.cloud.vision.v1.IAnnotateImageResponse) => {
+            if (response.textAnnotations && response.textAnnotations.length > 0) {
+                fullText += response.textAnnotations[0].description + '\n\n';
+            }
+        });
+
+        if (fullText.trim() === '') {
+            fullText = 'No text found in the images.';
         }
 
         // Vertex Gemeni API
@@ -66,7 +81,7 @@ app.post('/api/ocr', upload.single('image'), async (req, res) => {
 
         // Final response
         res.json({
-            ocrText: fullText,
+            ocrText: fullText.trim(),
             aiText: aiText
         });
 
