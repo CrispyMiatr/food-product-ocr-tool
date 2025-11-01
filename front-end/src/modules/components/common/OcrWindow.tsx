@@ -68,7 +68,7 @@ export const OcrWindow: React.FC = () => {
                     <pre>{ocrText}</pre>
                     <br />
                     <h2>Processed Text:</h2>
-                    <pre>{aiText}</pre>
+                    <pre>{JSON.stringify(aiText, null, 2)}</pre>
                 </div>
             )}
         </div>

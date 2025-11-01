@@ -5,6 +5,8 @@ import { ImageAnnotatorClient, protos } from '@google-cloud/vision';
 import { VertexAI } from '@google-cloud/vertexai';
 import dotenv from 'dotenv';
 
+import { responseSchema } from './responseSchema';
+
 dotenv.config();
 
 const app = express();
@@ -32,7 +34,11 @@ const generativeModel = vertexAI.getGenerativeModel({
 
 // Set custom prompt
 const getPrompt = (fullText: string): string => {
-    return `Explain in short what you think the given text is:
+    return `Give raw text, do not style it with markdown.
+    Given the text extracted from a beverage can, populate the provided JSON schema with all available information.
+    If a piece of information is not present in the text, leave the corresponding field empty. Do NOT create new fields. Adhere to the given structure and parameters strictly.
+    If the information is not in English, translate it and populate the given fields in the structure. If it is English, leave the "OG" fields empty and only populate the "EN" fields.
+    The text is as follows:
     """
     ${fullText}
     """
@@ -74,10 +80,46 @@ app.post('/api/ocr', upload.array('image', 5), async (req, res) => {
         // Vertex Gemeni API
         const prompt = getPrompt(fullText);
         const request = {
-            contents: [{ role: 'user', parts: [{ text: prompt }] }],
+            contents: [{
+                role: 'user',
+                parts: [{ text: prompt }]
+            }],
+            tools: [{
+                functionDeclarations: [{
+                    name: "extract_beverage_info",
+                    description: "Extracts beverage information based on the provided text.",
+                    parameters: responseSchema,
+                }],
+            }],
         };
         const resp = await generativeModel.generateContent(request);
-        const aiText = resp.response.candidates?.[0]?.content?.parts?.[0]?.text || "Could not process the text.";
+
+        // debug log
+        console.log('Full Gemini Response:', JSON.stringify(resp.response, null, 2));
+
+        let aiText: any = "Could not process the text.";
+        const rawResponse = resp.response.candidates?.[0];
+        const part = rawResponse?.content?.parts?.[0];
+
+        if (part?.functionCall?.args) {
+            aiText = part.functionCall.args;
+        }
+        // Fallback for if it sends it as a text string anyway
+        else if (part?.text) {
+            try {
+                // Use a regular expression to find the JSON block. This is more robust.
+                const jsonMatch = part.text.match(/\{[\s\S]*\}/);
+                if (jsonMatch) {
+                    aiText = JSON.parse(jsonMatch[0]);
+                } else {
+                    throw new Error("No valid JSON object found in the text response.");
+                }
+            } catch (error) {
+                console.error("Failed to parse AI response JSON:", error);
+                console.error("Raw text that failed parsing:", part.text);
+                aiText = "Could not process the text: Invalid JSON in response.";
+            }
+        }
 
         // Final response
         res.json({
