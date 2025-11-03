@@ -1,9 +1,7 @@
-import { OcrWindow } from "~/components";
+import { Home } from "../Home";
 
-export function App() {
+export const App = () => {
   return (
-    <div className="App">
-      <OcrWindow />
-    </div>
+    <Home />
   );
 }
