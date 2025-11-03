@@ -1,1 +1,0 @@
-export { OcrWindow } from './OcrWindow.tsx';
