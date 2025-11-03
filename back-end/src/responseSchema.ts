@@ -131,13 +131,10 @@ export const responseSchema = {
                         type: SchemaType.OBJECT,
                         description: 'Add any vitamin information that is present. If no nutrition value is present, keep the object, but add "/" to this field.',
                         properties: {
-                            header: {
-                                type: SchemaType.STRING
-                            },
                             vit_A: {
                                 type: SchemaType.OBJECT,
                                 description: 'ALWAYS use the vitamin letters as the name, e.g. Vitamin B12, Vitamin C. Add the full name in the xtra field as is instructed there.',
-                                properties: { name: '{ type: SchemaType.STRING }', per_100mL: { type: SchemaType.STRING }, per_500mL: { type: SchemaType.STRING } },
+                                properties: { name: { type: SchemaType.STRING }, per_100mL: { type: SchemaType.STRING }, per_500mL: { type: SchemaType.STRING } },
                                 required: ['name', 'per_100mL', 'per_500mL']
                             },
                             vit_B1: {
