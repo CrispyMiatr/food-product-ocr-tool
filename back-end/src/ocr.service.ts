@@ -34,24 +34,29 @@ const generativeModel = vertexAI.getGenerativeModel({
 
 // Set custom prompt
 const getPrompt = (fullText: string): string => {
-    return `Your task is to extract nutritional information from the provided text and populate a JSON schema. Follow these rules strictly:
-1.  **Raw JSON Output**: Your entire response must be a single, raw JSON object. Do not use markdown formatting.
-2.  **Adhere to Schema**: Strictly follow the provided JSON schema. Do not add, remove, or rename any fields from the structure.
-3.  **Handling Missing Nutritional Values**: For any numerical nutritional value that is not present in the text (such as 'per_100mL' or 'per_500mL'), you MUST use the string "/" as its value. Do not omit the field or leave it empty.
-4.  **Field Content**:
-    *   For the "name" field of each nutrient, use the capitalized English name (e.g., "Protein", "Saturated Fat").
-    *   For special fields like "xtra" in 'salt' or 'calcium', you MUST populate them with the exact string specified in the schema description (e.g., "[NaCl]", "[Ca]").
-    *   Do not put daily intake percentages in the nutrition tables.
-5.  **Translation Logic**:
-    *   If the source text is in English, populate only the "EN" fields.
-    *   **If the text contains one or more non-English languages**:
-        a. Translate the information into English and populate the "EN" object.
-        b. For EACH original language detected (e.g., German, French), identify its two-letter ISO 639-1 code in capital letters (e.g., "DE" for German, "FR" for French, "NL" for Dutch) and add this object afer the EN object.
+    return `You are a highly precise data extraction tool. Your ONLY function is to extract nutritional information from the provided text and call the 'extract_beverage_info' function with the extracted data. Your entire response MUST be a call to this function and nothing else.
+
+Follow these rules with absolute precision:
+1.  Strict Schema Adherence: You MUST strictly follow the provided JSON schema for the 'extract_beverage_info' function. Do not add, remove, or rename any fields. The structure must be identical to the schema.
+2.  Mandatory Fields: All fields marked as 'required' in the schema MUST be present.
+3.  Handling Missing Values: For any numerical nutritional value that is not present in the text (e.g., 'per_100mL' or 'per_500mL' for a nutrient), you MUST use the string "/" as its value. Do not omit the field.
+4.  Field Content Rules:
+    *   Nutrient "name": Use the capitalized English name (e.g., "Protein", "Saturated Fat").
+    *   Special "xtra" fields: Populate these with the EXACT string specified in the schema description (e.g., "[NaCl]" for salt, "[Ca]" for calcium).
+    *   Daily intake percentages: These MUST be excluded from the nutrition tables.
+5.  Multi-Language Processing:
+    *   If the source text is only in English, create entries only for the 'EN' language code.
+    *   If non-English languages are present, you MUST:
+        a. Translate all necessary information into English and populate the 'EN' objects.
+        b. For EACH original language detected, identify its two-letter ISO 639-1 code in capital letters (e.g., "DE", "FR", "NL") and create a corresponding object with the original, untranslated text.
+6.  Calculations: If nutritional values for a 500mL serving are not present, you MUST calculate them based on the 100mL values. If 100mL values are also missing, use "/".
+
 The text to analyze is as follows:
     """
     ${fullText}
     """
-    `
+
+Now, call the 'extract_beverage_info' function with the extracted data.`;
 }
 
 app.post('/api/ocr', upload.array('image', 5), async (req, res) => {
