@@ -4,11 +4,13 @@ h1 {
     font-size: 30px;
 }
 
+h2 {
+    margin-top: 0;
+}
+
 .home-container {
     grid-column: 1/13;
     grid-row: 2/3;
-
-    font-family: 'Geologica', sans-serif;
 
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -18,53 +20,121 @@ h1 {
     margin: 0px 60px 0px 60px;
 }
 
-fieldset {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 16px;
-    margin-bottom: 24px;
+// Button
+.btn {
+    cursor: pointer;
+
+    font-family: 'Geologica', sans-serif;
+    font-size: 14px;
+
+    padding: 8px 15px;
+    margin: 0px 5px;
+    background-color: #bed2e9;
+    border-radius: 5px;
+    border: none;
+
+    &:hover {
+        color: #fff;
+        background-color: #162436;
+    }
 }
 
-legend {
-    font-weight: bold;
-    font-size: 1.2em;
-    padding: 0 8px;
-    color: #555;
-}
+.btn-save {
+    cursor: pointer;
 
-label {
-    margin-bottom: 4px;
-    font-size: 0.9em;
-    font-weight: 500;
-    color: #444;
-}
+    font-family: 'Geologica', sans-serif;
+    font-size: 16px;
 
-input[type="text"],
-textarea {
+    padding: 5px 15px;
+    background-color: #bed2e9;
+    border-radius: 5px;
+    border: none;
     width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-    box-sizing: border-box;
-    /* Important for consistent sizing */
+
+    &:hover {
+        color: #fff;
+        background-color: #162436;
+    }
 }
 
-input[type="text"]:focus,
-textarea:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+// Modal
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+
+    &__modal-content {
+        background-color: #fff;
+        padding: 20px 30px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 750px;
+        max-height: 90vh;
+        overflow-y: auto;
+        color: #000;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+        &__close-button {
+            float: right;
+            padding: 8px 15px;
+            cursor: pointer;
+            border: none;
+            background: #eee;
+            border-radius: 5px;
+        }
+
+        &__modal-section {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+        }
+
+        &__pre-wrap {
+            white-space: pre-wrap;
+        }
+    }
 }
 
-textarea {
-    min-height: 100px;
-    resize: vertical;
+.nutrition-table-display {
+    margin-bottom: 10px;
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 5px;
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
 
-h4 {
-    margin-top: 20px;
-    margin-bottom: 8px;
-    color: #343a40;
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f9f9f9;
+}
+
+.vitamins-header {
+    font-weight: bold;
+    padding-top: 15px;
+    padding-bottom: 5px;
+}
+
+.nutrient-extra {
+    margin-left: 5px;
+    font-style: italic;
+    color: #555;
+    font-size: 12px;
 }
