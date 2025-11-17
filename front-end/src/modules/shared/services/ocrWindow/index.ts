@@ -1,2 +1,2 @@
 export { ocrWindowService } from './ocrWindow.service.ts'
-export type { OcrWindowType, AiTextData, NutritionTable, LocalisedText } from './ocrWindow.service.types.ts'
+export type { OcrWindowType, AiTextData, NutritionTable, LocalisedText, Vitamin, Nutrient } from './ocrWindow.service.types.ts'

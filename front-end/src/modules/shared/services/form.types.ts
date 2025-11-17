@@ -1,7 +1,7 @@
 import type { AiTextData, LocalisedText, NutritionTable } from "./ocrWindow";
 
 export interface FormInfoType {
-    info: AiTextData['info'];
+    data: AiTextData['info'] | null;
     onChange: (field: keyof AiTextData['info'], value: string) => void;
 }
 
