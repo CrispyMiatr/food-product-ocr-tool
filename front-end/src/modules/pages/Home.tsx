@@ -1,19 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useUploadOcrImages } from '~/shared';
 import type { AiTextData, LocalisedText, OcrWindowType } from '~/shared/services/ocrWindow/ocrWindow.service.types';
-import { FormInfo, FormLocalised, FormNutrition } from '~/components';
-
-const initialEmptyState: AiTextData = {
-    info: { brand: '', name: '', company: '', country_code: '', country: '', volume: '', weight: '', barcode: '', website: '' },
-    warning_info: [{ lang: 'EN', text: '' }],
-    ingredients_list: [{ lang: 'EN', text: '' }],
-    nutrition_tables: [],
-};
+import { FormInfo, FormLocalised, FormNutrition, OcrDataModal } from '~/components';
+import styles from '~styles/app.module.scss';
 
 export const Home: React.FC = () => {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [error, setError] = useState<string>('');
-    const [formData, setFormData] = useState<AiTextData | null>(initialEmptyState);
+    const [formData, setFormData] = useState<AiTextData | null>(null);
+    const [savedOcrData, setSavedOcrData] = useState<Record<string, AiTextData>>({});
+    const [selectedOcrData, setSelectedOcrData] = useState<AiTextData | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    useEffect(() => {
+        const ocrData: Record<string, AiTextData> = {};
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key?.startsWith('ocr_data_')) {
+                try {
+                    ocrData[key] = JSON.parse(localStorage.getItem(key) || '');
+                } catch (error) {
+                    console.error("Failed to parse localStorage data", error);
+                }
+            }
+        }
+        setSavedOcrData(ocrData);
+    }, []);
 
     const { mutate, isPending, error: mutationError } = useUploadOcrImages({
         onSuccess: (data: OcrWindowType) => setFormData(data.aiText),
@@ -33,7 +45,10 @@ export const Home: React.FC = () => {
     };
 
     const handleUpload = () => {
-        if (selectedFiles.length === 0) return setError('Please select at least one file.');
+        if (selectedFiles.length === 0) {
+            setError('Please select at least one file.');
+            return;
+        }
         setError('');
         mutate(selectedFiles);
     };
@@ -65,13 +80,49 @@ export const Home: React.FC = () => {
     };
 
     const handleSave = () => {
-        console.log('Saving data to database:', JSON.stringify(formData, null, 2));
-        alert('Data logged to console.');
+        if (formData) {
+            const storageKey = `ocr_data_${new Date().getTime()}`;
+            localStorage.setItem(storageKey, JSON.stringify(formData));
+            alert('Data saved to your browser.');
+
+            setSavedOcrData(prev => ({ ...prev, [storageKey]: formData }));
+        }
+    };
+
+    const handleOpenModal = (data: AiTextData) => {
+        setSelectedOcrData(data);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedOcrData(null);
+        setIsModalOpen(false);
     };
 
     return (
         <div>
-            <h1>OCR Uploader</h1>
+            <h1>Food Product Information Extraction Tool</h1>
+
+            <div>
+                <h2>Saved Extractions:</h2>
+                {Object.entries(savedOcrData).length === 0 ? (
+                    <div>No extractions available.</div>
+                ) : (
+                    Object.entries(savedOcrData).map(([key, data]) => {
+                        const label = [data.info.brand, data.info.name].filter(Boolean).join(' - ');
+                        const buttonText = label || `Unnamed Extraction (${new Date(parseInt(key.split('_')[2])).toLocaleTimeString()})`;
+
+                        return (
+                            <button className={styles['btn']} key={key} onClick={() => handleOpenModal(data)}>
+                                {buttonText}
+                            </button>
+                        );
+                    })
+                )}
+            </div>
+
+            <hr />
+
             <div>
                 <input type="file" accept="image/*" onChange={handleFileChange} multiple />
                 <button onClick={handleUpload} disabled={selectedFiles.length === 0 || isPending}>
@@ -80,13 +131,14 @@ export const Home: React.FC = () => {
             </div>
 
             {isPending && <p>Processing, please wait...</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {mutationError && <p style={{ color: 'red' }}>{mutationError.message}</p>}
+            {(error || mutationError) && (
+                <p style={{ color: 'red' }}>{error || mutationError?.message}</p>
+            )}
 
             {formData && (
                 <form>
                     <FormInfo
-                        info={formData.info}
+                        data={formData.info}
                         onChange={handleInfoChange}
                     />
 
@@ -110,8 +162,12 @@ export const Home: React.FC = () => {
                     />
 
                     <hr />
-                    <button type="button" onClick={handleSave}>Save to Database</button>
+                    <button className={styles['btn-save']} type="button" onClick={handleSave}>Save</button>
                 </form>
+            )}
+
+            {isModalOpen && selectedOcrData && (
+                <OcrDataModal data={selectedOcrData} onClose={handleCloseModal} />
             )}
         </div>
     );
