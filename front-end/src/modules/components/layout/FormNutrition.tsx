@@ -1,47 +1,87 @@
 import React from 'react';
-import type { FormNutritionType } from '~/shared';
-
+import type { FormNutritionType, NutritionTable } from '~/shared';
+import styles from '~styles/components/form.module.scss';
 
 export const FormNutrition: React.FC<FormNutritionType> = ({ tables, onChange }) => {
+    // This array defines the ORDER of keys, not the display text.
+    const nutrientOrder: (keyof NutritionTable['basic_info'])[] = [
+        'energy', 'fat', 'saturated_fat', 'cholesterol', 'carbohydrates',
+        'sugars', 'dietary_fiber', 'protein', 'salt', 'calcium', 'potassium'
+    ];
+
+    // This array also defines the ORDER of vitamin keys.
+    const vitaminOrder: (keyof Omit<NonNullable<NutritionTable['vitamins']>, 'header'>)[] = [
+        'vit_A', 'vit_B1', 'vit_B2', 'vit_B3', 'vit_B5', 'vit_B6',
+        'vit_B7', 'vit_B9', 'vit_B12', 'vit_C', 'vit_D', 'vit_E', 'vit_K'
+    ];
+
     return (
         <fieldset>
             <legend><h2>Nutrition Tables</h2></legend>
             {tables.map((table, tableIndex) => (
-                <div key={tableIndex} style={{ border: '1px solid #ddd', padding: '10px', margin: '10px 0' }}>
+                <div key={tableIndex} className={styles['form-nutrition__nutrition-table']}>
                     <h3>Table ({table.lang})</h3>
-                    <label>Language: </label>
-                    <input value={table.lang} onChange={e => onChange(tableIndex, ['lang'], e.target.value)} />
+                    <div className={styles['form-nutrition__nutrition-table__lang-input-group']}>
+                        <label>Language code:</label>
+                        <input type="text" value={table.lang} onChange={event => onChange(tableIndex, ['lang'], event.target.value)} />
+                    </div>
 
-                    <h4>Basic Info</h4>
-                    {Object.entries(table.basic_info).map(([key, nutrient]) => (
-                        <div key={key}>
-                            <strong>{nutrient.name}</strong>
-                            <input value={nutrient.per_100mL} onChange={e => onChange(tableIndex, ['basic_info', key, 'per_100mL'], e.target.value)} />
-                            <input value={nutrient.per_500mL} onChange={e => onChange(tableIndex, ['basic_info', key, 'per_500mL'], e.target.value)} />
-                            {'xtra' in nutrient && nutrient.xtra && <span> {nutrient.xtra}</span>}
-                        </div>
-                    ))}
-
-                    {table.vitamins && (
-                        <>
-                            <h4>Vitamins</h4>
-                            {Object.entries(table.vitamins).map(([key, vitamin]) => {
-                                if (key !== 'header' && typeof vitamin === 'object' && vitamin !== null) {
-                                    return (
-                                        <div key={key}>
-                                            <strong>{vitamin.name}</strong>
-                                            <input value={vitamin.per_100mL} onChange={e => onChange(tableIndex, ['vitamins', key, 'per_100mL'], e.target.value)} />
-                                            <input value={vitamin.per_500mL} onChange={e => onChange(tableIndex, ['vitamins', key, 'per_500mL'], e.target.value)} />
-                                            {'xtra' in vitamin && vitamin.xtra && (
-                                                <input value={vitamin.xtra} onChange={e => onChange(tableIndex, ['vitamins', key, 'xtra'], e.target.value)} placeholder="xtra info" />
-                                            )}
-                                        </div>
-                                    );
-                                }
-                                return null;
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nutrients</th>
+                                <th>Per 100 mL / 100 g</th>
+                                <th>Per 500 mL / 500 g</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {nutrientOrder.map((key) => {
+                                const nutrient = table.basic_info[key];
+                                return (
+                                    <tr key={key}>
+                                        <td>
+                                            {nutrient.name}
+                                            {'xtra' in nutrient && nutrient.xtra && <span className={styles['nutrient-extra']}>({nutrient.xtra})</span>}
+                                        </td>
+                                        <td>
+                                            <input type="text" placeholder="e.g., 10g" value={nutrient.per_100mL} onChange={event => onChange(tableIndex, ['basic_info', key, 'per_100mL'], event.target.value)} />
+                                        </td>
+                                        <td>
+                                            <input type="text" placeholder="e.g., 50g" value={nutrient.per_500mL} onChange={event => onChange(tableIndex, ['basic_info', key, 'per_500mL'], event.target.value)} />
+                                        </td>
+                                    </tr>
+                                );
                             })}
-                        </>
-                    )}
+
+                            {table.vitamins && (
+                                <>
+                                    <tr>
+                                        <td colSpan={3} className={styles['vitamins-header']}>Vitamins</td>
+                                    </tr>
+                                    {vitaminOrder.map((key) => {
+                                        const vitamin = table.vitamins?.[key];
+                                        if (vitamin && typeof vitamin === 'object') {
+                                            return (
+                                                <tr key={key}>
+                                                    <td>
+                                                        {vitamin.name}
+                                                        {'xtra' in vitamin && vitamin.xtra && <span className={styles['nutrient-extra']}> ({vitamin.xtra})</span>}
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" placeholder="e.g., 10μg" value={vitamin.per_100mL} onChange={event => onChange(tableIndex, ['vitamins', key, 'per_100mL'], event.target.value)} />
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" placeholder="e.g., 50μg" value={vitamin.per_500mL} onChange={event => onChange(tableIndex, ['vitamins', key, 'per_500mL'], event.target.value)} />
+                                                    </td>
+                                                </tr>
+                                            );
+                                        }
+                                        return null;
+                                    })}
+                                </>
+                            )}
+                        </tbody>
+                    </table>
                 </div>
             ))}
         </fieldset>

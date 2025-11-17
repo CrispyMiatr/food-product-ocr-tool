@@ -1,4 +1,11 @@
+@use './app.module.scss' as *;
+@use './components/' as *;
+
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&display=swap');
+
 body {
     font-family: 'Geologica', sans-serif;
     color: #000;
+
+    margin: 0px 20px;
 }

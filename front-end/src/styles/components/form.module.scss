@@ -1,0 +1,146 @@
+h1 {
+    font-size: 30px;
+}
+
+h2 {
+    margin: 0px;
+}
+
+.home-container {
+    grid-column: 1/13;
+    grid-row: 2/3;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(4, minmax(25px, auto));
+    grid-column-gap: 20px;
+    margin: 0px 60px 0px 60px;
+}
+
+fieldset {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 16px;
+    margin: 24px 0px;
+}
+
+legend {
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 0 8px;
+    color: #000000;
+}
+
+label {
+    margin-bottom: 4px;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #000000;
+    display: block;
+    /* Ensures label is on its own line */
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+h4 {
+    margin-top: 10px;
+    margin-bottom: 8px;
+    color: #000000;
+}
+
+
+/* FormInfo Styles */
+.form-field {
+    margin-bottom: 10px;
+    /* Adds space between fields */
+}
+
+/* FormLocalised Styles */
+.localised-field {
+    margin-bottom: 15px;
+
+    input {
+        width: 50px;
+        margin-bottom: 5px;
+    }
+}
+
+/* FormNutrition Styles */
+.form-nutrition {
+    &__nutrition-table {
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin-top: 10px;
+        border-radius: 4px;
+
+        &__lang-input-group {
+            margin-bottom: 5px;
+
+            label {
+                margin-right: 8px;
+            }
+
+            input {
+                width: 50px;
+                margin-bottom: 5px;
+            }
+        }
+    }
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    th {
+        background-color: #f9f9f9;
+        font-weight: bold;
+    }
+
+    // Ensure inputs fill the table cells completely
+    input[type="text"] {
+        margin: 0;
+    }
+
+    // Style for the 'Vitamins' header row within the table
+    .vitamins-header {
+        font-weight: bold;
+        padding-top: 15px;
+        padding-bottom: 5px;
+    }
+
+    .nutrient-extra {
+        margin-left: 5px;
+        font-style: italic;
+        color: #555;
+        font-size: 12px;
+    }
+}

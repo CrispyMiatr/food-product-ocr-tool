@@ -1,11 +1,11 @@
-interface Nutrient {
+export interface Nutrient {
     name: string;
     per_100mL: string;
     per_500mL: string;
     xtra?: string;
 }
 
-interface Vitamin {
+export interface Vitamin {
     name: string;
     per_100mL: string;
     per_500mL: string;
