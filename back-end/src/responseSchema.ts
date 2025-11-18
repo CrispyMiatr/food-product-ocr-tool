@@ -133,79 +133,79 @@ export const responseSchema = {
                         properties: {
                             vit_A: {
                                 type: SchemaType.OBJECT,
-                                description: 'ALWAYS use Vitamin A as the name.',
+                                description: 'ALWAYS use Vitamin A as the name. Translate to the present languages if necessary, e.g. Vitamin A to Witamina A.',
                                 properties: { name: { type: SchemaType.STRING }, per_100mL: { type: SchemaType.STRING }, per_500mL: { type: SchemaType.STRING } },
                                 required: ['name', 'per_100mL', 'per_500mL']
                             },
                             vit_B1: {
                                 type: SchemaType.OBJECT,
-                                description: 'ALWAYS use Vitamin B1 as the name. Add the full, translated name in the xtra field as is instructed there.',
+                                description: 'ALWAYS use Vitamin B1 as the name. Translate to the present languages if necessary, e.g. Vitamin B1 to Witamina B1. Add the full, translated name in the xtra field as is instructed there.',
                                 properties: { name: { type: SchemaType.STRING }, per_100mL: { type: SchemaType.STRING }, per_500mL: { type: SchemaType.STRING }, xtra: { type: SchemaType.STRING, description: "Always put the full name of the vitamin in the corresponding language here if applicable. If not found in the given text, translate it from the English name provided here: English: Thiamine." } },
                                 required: ['name', 'per_100mL', 'per_500mL', 'xtra']
                             },
                             vit_B2: {
                                 type: SchemaType.OBJECT,
-                                description: 'ALWAYS use Vitamin B2 as the name. Add the full, translated name in the xtra field as is instructed there.',
+                                description: 'ALWAYS use Vitamin B2 as the name. Translate to the present languages if necessary, e.g. Vitamin B2 to Witamina B2. Add the full, translated name in the xtra field as is instructed there.',
                                 properties: { name: { type: SchemaType.STRING }, per_100mL: { type: SchemaType.STRING }, per_500mL: { type: SchemaType.STRING }, xtra: { type: SchemaType.STRING, description: "Always put the full name of the vitamin in the corresponding language here if applicable. If not found in the given text, translate it from the English name provided here: English: Riboflavin." } },
                                 required: ['name', 'per_100mL', 'per_500mL', 'xtra']
                             },
                             vit_B3: {
                                 type: SchemaType.OBJECT,
-                                description: 'ALWAYS use Vitamin B3 as the name. Add the full, translated name in the xtra field as is instructed there.',
+                                description: 'ALWAYS use Vitamin B3 as the name. Translate to the present languages if necessary, e.g. Vitamin B3 to Witamina B3. Add the full, translated name in the xtra field as is instructed there.',
                                 properties: { name: { type: SchemaType.STRING }, per_100mL: { type: SchemaType.STRING }, per_500mL: { type: SchemaType.STRING }, xtra: { type: SchemaType.STRING, description: "Always put the full name of the vitamin in the corresponding language here if applicable. If not found in the given text, translate it from the English name provided here: English: Niacin." } },
                                 required: ['name', 'per_100mL', 'per_500mL', 'xtra']
                             },
                             vit_B5: {
                                 type: SchemaType.OBJECT,
-                                description: 'ALWAYS use Vitamin B5 as the name. Add the full, translated name in the xtra field as is instructed there.',
+                                description: 'ALWAYS use Vitamin B5 as the name. Translate to the present languages if necessary, e.g. Vitamin B5 to Witamina B5. Add the full, translated name in the xtra field as is instructed there.',
                                 properties: { name: { type: SchemaType.STRING }, per_100mL: { type: SchemaType.STRING }, per_500mL: { type: SchemaType.STRING }, xtra: { type: SchemaType.STRING, description: "Always put the full name of the vitamin in the corresponding language here if applicable. If not found in the given text, translate it from the English name provided here: English: Pantothenic acid." } },
                                 required: ['name', 'per_100mL', 'per_500mL', 'xtra']
                             },
                             vit_B6: {
                                 type: SchemaType.OBJECT,
-                                description: 'ALWAYS use Vitamin B6 as the name. Add the full, translated name in the xtra field as is instructed there.',
+                                description: 'ALWAYS use Vitamin B6 as the name. Translate to the present languages if necessary, e.g. Vitamin B6 to Witamina B6. Add the full, translated name in the xtra field as is instructed there.',
                                 properties: { name: { type: SchemaType.STRING }, per_100mL: { type: SchemaType.STRING }, per_500mL: { type: SchemaType.STRING }, xtra: { type: SchemaType.STRING, description: "Always put the full name of the vitamin in the corresponding language here if applicable. If not found in the given text, translate it from the English name provided here: English: Pyridoxine." } },
                                 required: ['name', 'per_100mL', 'per_500mL', 'xtra']
                             },
                             vit_B7: {
                                 type: SchemaType.OBJECT,
-                                description: 'ALWAYS use Vitamin B7 as the name.',
+                                description: 'ALWAYS use Vitamin B7 as the name. Translate to the present languages if necessary, e.g. Vitamin B7 to Witamina B7.',
                                 properties: { name: { type: SchemaType.STRING }, per_100mL: { type: SchemaType.STRING }, per_500mL: { type: SchemaType.STRING } },
                                 required: ['name', 'per_100mL', 'per_500mL']
                             },
                             vit_B9: {
                                 type: SchemaType.OBJECT,
-                                description: 'ALWAYS use Vitamin B6 as the name.',
+                                description: 'ALWAYS use Vitamin B9 as the name. Translate to the present languages if necessary, e.g. Vitamin B9 to Witamina B9.',
                                 properties: { name: { type: SchemaType.STRING }, per_100mL: { type: SchemaType.STRING }, per_500mL: { type: SchemaType.STRING } },
                                 required: ['name', 'per_100mL', 'per_500mL']
                             },
                             vit_B12: {
                                 type: SchemaType.OBJECT,
-                                description: 'ALWAYS use Vitamin B12 as the name.',
+                                description: 'ALWAYS use Vitamin B12 as the name. Translate to the present languages if necessary, e.g. Vitamin B12 to Witamina B12.',
                                 properties: { name: { type: SchemaType.STRING }, per_100mL: { type: SchemaType.STRING }, per_500mL: { type: SchemaType.STRING } },
                                 required: ['name', 'per_100mL', 'per_500mL']
                             },
                             vit_C: {
                                 type: SchemaType.OBJECT,
-                                description: 'ALWAYS use Vitamin C as the name.',
+                                description: 'ALWAYS use Vitamin C as the name. Translate to the present languages if necessary, e.g. Vitamin C to Witamina C.',
                                 properties: { name: { type: SchemaType.STRING }, per_100mL: { type: SchemaType.STRING }, per_500mL: { type: SchemaType.STRING } },
                                 required: ['name', 'per_100mL', 'per_500mL']
                             },
                             vit_D: {
                                 type: SchemaType.OBJECT,
-                                description: 'ALWAYS use Vitamin D as the name.',
+                                description: 'ALWAYS use Vitamin D as the name. Translate to the present languages if necessary, e.g. Vitamin D to Witamina D.',
                                 properties: { name: { type: SchemaType.STRING }, per_100mL: { type: SchemaType.STRING }, per_500mL: { type: SchemaType.STRING } },
                                 required: ['name', 'per_100mL', 'per_500mL']
                             },
                             vit_E: {
                                 type: SchemaType.OBJECT,
-                                description: 'ALWAYS use Vitamin E as the name.',
+                                description: 'ALWAYS use Vitamin E as the name. Translate to the present languages if necessary, e.g. Vitamin E to Witamina E.',
                                 properties: { name: { type: SchemaType.STRING }, per_100mL: { type: SchemaType.STRING }, per_500mL: { type: SchemaType.STRING } },
                                 required: ['name', 'per_100mL', 'per_500mL']
                             },
                             vit_K: {
                                 type: SchemaType.OBJECT,
-                                description: 'ALWAYS use Vitamin K as the name.',
+                                description: 'ALWAYS use Vitamin K as the name. Translate to the present languages if necessary, e.g. Vitamin K to Witamina K.',
                                 properties: { name: { type: SchemaType.STRING }, per_100mL: { type: SchemaType.STRING }, per_500mL: { type: SchemaType.STRING } },
                                 required: ['name', 'per_100mL', 'per_500mL']
                             },
