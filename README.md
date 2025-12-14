@@ -62,7 +62,7 @@ To get started with the project, follow these steps:
 > GOOGLE_CLOUD_PROJECT="food-product-ocr-tool"
 > GOOGLE_CLOUD_LOCATION="europe-west1"
 > GOOGLE_APPLICATION_CREDENTIALS="./food-product-vertex-tool.json"
-```
+> ```
 
 ---
 
