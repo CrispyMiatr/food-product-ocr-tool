@@ -56,7 +56,13 @@ To get started with the project, follow these steps:
 > Without proper credentials, the OCR tool will not work.
 > Use the Google Vision API for OCR functionality, and Google Vertex AI for text processing.  
 > Make sure you have a Google Cloud account and create a service account key for the above mentioned in JSON format.
-> Upload the JSON file to your project and rename it as `google-credentials.json`.
+> Upload the JSON file to your project and rename it as `food-product-vertex-tool.json`.  
+> Additionally, create a .env file and set the following environment variables:
+> ```
+> GOOGLE_CLOUD_PROJECT="food-product-ocr-tool"
+> GOOGLE_CLOUD_LOCATION="europe-west1"
+> GOOGLE_APPLICATION_CREDENTIALS="./food-product-vertex-tool.json"
+```
 
 ---
 
