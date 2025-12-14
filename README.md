@@ -59,8 +59,8 @@ To get started with the project, follow these steps:
 > Upload the JSON file to your project and rename it as `food-product-vertex-tool.json`.  
 > Additionally, create a .env file and set the following environment variables:
 > ```
-> GOOGLE_CLOUD_PROJECT="food-product-ocr-tool"
-> GOOGLE_CLOUD_LOCATION="europe-west1"
+> GOOGLE_CLOUD_PROJECT="your-project-id"
+> GOOGLE_CLOUD_LOCATION="your-location*" *e.g. europe-west1*
 > GOOGLE_APPLICATION_CREDENTIALS="./food-product-vertex-tool.json"
 > ```
 
