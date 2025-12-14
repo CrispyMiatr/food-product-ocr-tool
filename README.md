@@ -51,12 +51,12 @@ To get started with the project, follow these steps:
    ```
    This will start a development server at `http://localhost:3001/`
 
-   > [!IMPORTANT] 
-   > ### Google Cloud Credentials.
-   > Without proper credentials, the OCR tool will not work.
-   > Use the Google Vision API for OCR functionality, and Google Vertex AI for text processing.
-   > Make sure you have a Google Cloud account and create a service account key for the above mentioned in JSON format.
-   > Upload the JSON file to your project and rename it as `google-credentials.json`.
+> [!IMPORTANT] 
+> ### Google Cloud Credentials.
+> Without proper credentials, the OCR tool will not work.
+> Use the Google Vision API for OCR functionality, and Google Vertex AI for text processing.
+> Make sure you have a Google Cloud account and create a service account key for the above mentioned in JSON format.
+> Upload the JSON file to your project and rename it as `google-credentials.json`.
 
 ---
 
