@@ -5,22 +5,6 @@ After extraction to will sort the information into a form where you can double-c
 
 ---
 
-> [!WARNING] 
-> ### Warning: project not finished.
-> Although this project works as is, the description above has not yet been realised.
-> Do not expect a complete and polished version.
-
----
-
-## Table of Contents
-1. [Features](#features)
-2. [Project Setup](#project-setup)
-3. [Coding Conventions](#coding-conventions)
-4. [License](#license)
-5. [Attribution](#attribution)
-
----
-
 ## Features
 - Extract information from food product images using OCR.
 - Manually check the extracted information.
@@ -67,19 +51,12 @@ To get started with the project, follow these steps:
    ```
    This will start a development server at `http://localhost:3001/`
 
----
-
-## Coding Conventions
-
-### 1. **Formatting**
-**Rules:**
-- Follow the **Airbnb** style guide.
-- Use **camelCase** for variables and functions.
-- Use **PascalCase** for React component names.
-
-### 2. **File and Component Naming**
-- Components are stored in the `components/` or `pages/` folder and are named using **PascalCase** (e.g., `Header.jsx`).
-- Hooks are stored in the `shared/hooks/` folder and are named using **camelCase** (e.g., `useFetch.js`).
+   > [!IMPORTANT] 
+   > ### Google Cloud Credentials.
+   > Without proper credentials, the OCR tool will not work.
+   > Use the Google Vision API for OCR functionality, and Google Vertex AI for text processing.
+   > Make sure you have a Google Cloud account and create a service account key for the above mentioned in JSON format.
+   > Upload the JSON file to your project and rename it as `google-credentials.json`.
 
 ---
 
