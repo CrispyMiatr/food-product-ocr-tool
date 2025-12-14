@@ -54,7 +54,7 @@ To get started with the project, follow these steps:
 > [!IMPORTANT] 
 > ### Google Cloud Credentials.
 > Without proper credentials, the OCR tool will not work.
-> Use the Google Vision API for OCR functionality, and Google Vertex AI for text processing.
+> Use the Google Vision API for OCR functionality, and Google Vertex AI for text processing.  
 > Make sure you have a Google Cloud account and create a service account key for the above mentioned in JSON format.
 > Upload the JSON file to your project and rename it as `google-credentials.json`.
 
